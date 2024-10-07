@@ -127,3 +127,42 @@ static List<string> decode(string s)
     }
     return res;
 }
+
+//Product of Array Except Self (No Division Allowed!)
+static int[] testFunc(int[] nums)
+{
+
+    //Store num's length + create suffix, prefix, and result arrays 
+    int n = nums.Length;
+    int[] prefix = new int[n];
+    int[] suffix = new int[n];
+    int[] result = new int[n];
+
+    //Set 1st index of prefix + last index of suffix arrays to 1 
+    prefix[0] = 1;
+    suffix[n - 1] = 1;
+
+    //Calc prefix and suffix arrays
+    for (int i = 1; i < n; i++)
+    {
+        prefix[i] = nums[i - 1] * prefix[i - 1];
+    }
+
+    for (int i = n - 2; i >= 0; i--)
+    {
+        suffix[i] = nums[i + 1] * suffix[i + 1];
+    }
+
+    //Calc and return result array from our prefix and suffix arrays
+    for (int i = 0; i < n; i++)
+    {
+        result[i] = prefix[i] * suffix[i];
+    }
+
+    foreach (int num in result)
+    {
+        Console.WriteLine(num);
+    }
+    return result;
+
+}
