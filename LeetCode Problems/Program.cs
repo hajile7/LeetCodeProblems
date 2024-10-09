@@ -1,5 +1,7 @@
 ﻿//Problems:
-//Group Anagrams
+//TwoSum
+using System.ComponentModel.DataAnnotations;
+
 static int[] twoSum(int[] nums, int target)
 {
     var map = new Dictionary<int, int>();
@@ -23,6 +25,7 @@ static int[] twoSum(int[] nums, int target)
     return result;
 
 }
+//Group Anagrams
 static IList<IList<string>> GroupAnagrams(string[] strs)
 {
     var ans = new Dictionary<string, List<string>>();
@@ -129,7 +132,7 @@ static List<string> decode(string s)
 }
 
 //Product of Array Except Self (No Division Allowed!)
-static int[] testFunc(int[] nums)
+static int[] ProductExceptSelf(int[] nums)
 {
 
     //Store num's length + create suffix, prefix, and result arrays 
@@ -164,5 +167,31 @@ static int[] testFunc(int[] nums)
         Console.WriteLine(num);
     }
     return result;
+
+}
+
+//Longest consecutive sequence
+static int LongestConsecutiveSequence(int[] nums)
+{
+    //Create HashSet from nums + instantiate longest
+    HashSet<int> numSet = new HashSet<int>(nums);
+    int longest = 0;
+
+    //Iterate over HashSet
+    foreach(int num in numSet)
+    {
+        //Check to see if num is start of a sequence
+        if(!numSet.Contains(num - 1))
+        {
+            int length = 1;
+            //While HashSet contains next sequence num, increment length
+            while(numSet.Contains(num + length))
+            {
+                length++;
+            }
+            longest = Math.Max(longest, length);
+        }
+    }
+    return longest;
 
 }
