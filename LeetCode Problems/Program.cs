@@ -1,6 +1,7 @@
 ﻿//Problems:
 //TwoSum
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 static int[] twoSum(int[] nums, int target)
 {
@@ -194,4 +195,45 @@ static int LongestConsecutiveSequence(int[] nums)
     }
     return longest;
 
+}
+
+//Valid Parentheses
+static bool IsValid(string s)
+{
+    //Instantiate an empty stack
+    var stack = new Stack<char>();
+
+    //Create a Dictionary to store the relationship between closing and opening parentheses
+    var pairs = new Dictionary<char, char>()
+    {
+        [')'] = '(',
+        [']'] = '[',
+        ['}'] = '{'
+    };
+
+    //Iterate through each character in the input string
+    foreach (char c in s)
+    {
+
+        //If paren is NOT a closing paren, add it to the stack
+        if (!pairs.ContainsKey(c))
+        {
+            stack.Push(c);
+        }
+
+        //If paren IS a closing paren, we check for failure conditions:
+        //Check if stack is empty (represents no matching open paren, meaning string is invalid)
+        //Otherwise, pop and check if the popped char matches the corresponding open char. If not,
+        //string is invalid, as opening + closing paren do not match.
+
+        else if (stack.Count == 0 || stack.Pop() != pairs[c])
+        {
+            return false;
+        }
+    }
+
+    //Return true if we've emptied the stack, meaning all opening parens had matching closing parens in the correct order.
+    //If there are still elements in the stack, it means that there were open parens in the input string that were never closed.
+
+                return stack.Count == 0;
 }
