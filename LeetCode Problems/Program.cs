@@ -198,7 +198,7 @@ static int LongestConsecutiveSequence(int[] nums)
 }
 
 //Valid Parentheses
-static bool IsValid(string s)
+static bool IsValidParens(string s)
 {
     //Instantiate an empty stack
     var stack = new Stack<char>();
@@ -236,4 +236,46 @@ static bool IsValid(string s)
     //If there are still elements in the stack, it means that there were open parens in the input string that were never closed.
 
                 return stack.Count == 0;
+}
+
+static int EvalRPN(string[] tokens)
+{
+    //Instantiate a stack
+    Stack<int> stack = new Stack<int>();
+
+    //Iterate through our input array
+    foreach (string c in tokens)
+    {
+        //Cover all 'operator' cases, making sure - and / are handled in the correct order
+        if (c == "+")
+        {
+            stack.Push(stack.Pop() + stack.Pop());
+        }
+        else if (c == "-")
+        {
+            int a = stack.Pop();
+            int b = stack.Pop();
+            stack.Push(b - a);
+        }
+        else if (c == "*")
+        {
+            stack.Push(stack.Pop() * stack.Pop());
+        }
+        else if (c == "/")
+        {
+            int a = stack.Pop();
+            int b = stack.Pop();
+            stack.Push((int)((double)b / a));
+        }
+
+        //If not an operator, simply push the num onto the stack
+        else
+        {
+            stack.Push(int.Parse(c));
+        }
+    }
+
+    //Given that we will always receive valid input, return last number left in stack
+    //after iterating through entire input array
+    return stack.Pop();
 }

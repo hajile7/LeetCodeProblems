@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Eli\\source\\repos\\My stuff\\LeetCode Problems\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|c:\\users\\eli\\source\\repos\\my stuff\\leetcode problems\\leetcode problems\\classes\\minstack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|solutionrelative:leetcode problems\\classes\\minstack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|c:\\users\\eli\\source\\repos\\my stuff\\leetcode problems\\leetcode problems\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|solutionrelative:leetcode problems\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|c:\\users\\eli\\source\\repos\\my stuff\\leetcode problems\\leetcode problems\\classes\\minstack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A366D15D-873F-4857-83AA-7F11FF8D8E06}|LeetCode Problems\\LeetCode Problems.csproj|solutionrelative:leetcode problems\\classes\\minstack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,20 +26,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Eli\\source\\repos\\My stuff\\LeetCode Problems\\LeetCode Problems\\Program.cs",
               "RelativeDocumentMoniker": "LeetCode Problems\\Program.cs",
               "ToolTip": "C:\\Users\\Eli\\source\\repos\\My stuff\\LeetCode Problems\\LeetCode Problems\\Program.cs",
               "RelativeToolTip": "LeetCode Problems\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAPQAAAAAAAAAAAAqwAgBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-07T13:23:04.448Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MinStack.cs",
               "DocumentMoniker": "C:\\Users\\Eli\\source\\repos\\My stuff\\LeetCode Problems\\LeetCode Problems\\Classes\\MinStack.cs",
               "RelativeDocumentMoniker": "LeetCode Problems\\Classes\\MinStack.cs",
@@ -47,8 +47,7 @@
               "RelativeToolTip": "LeetCode Problems\\Classes\\MinStack.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAgwDIAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T15:41:40.881Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T15:41:40.881Z"
             }
           ]
         }
