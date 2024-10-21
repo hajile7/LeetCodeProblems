@@ -318,3 +318,38 @@ static bool IsValidSudoku(char[][] board)
     //Return true if we're able to iterate over the whole input board
     return true;
 }
+
+//Generate Valid Parens
+public class Solution
+{
+    //Create an entry point to our recursive function
+    public IList<string> GenerateParenthesis(int n)
+    {
+        List<string> result = new List<string>();
+        Recurse(n, 0, 0, "", result);
+        return result;
+    }
+
+    //Create our recursive function to build valid paren strings
+    private void Recurse(int n, int openP, int closedP, string curr, List<string> result)
+    {
+        //Base case: add curr string to result when open parens == closed parens == n and return
+        if (openP == closedP && openP == n)
+        {
+            result.Add(curr);
+            return;
+        }
+
+        //If open parens are less than n, recurse with openP + 1 and curr + "("
+        if (openP < n)
+        {
+            Recurse(n, openP + 1, closedP, curr + "(", result);
+        }
+
+        //If closed parens are less than open parens, recurse with closeP + 1 and curr + ")"
+        if (closedP < openP)
+        {
+            Recurse(n, openP, closedP + 1, curr + ")", result);
+        }
+    }
+}
