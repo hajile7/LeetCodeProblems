@@ -279,3 +279,42 @@ static int EvalRPN(string[] tokens)
     //after iterating through entire input array
     return stack.Pop();
 }
+
+static bool IsValidSudoku(char[][] board)
+{
+    //Create dictionaries for cols, rows, and squares
+    Dictionary<int, HashSet<char>> cols = new Dictionary<int, HashSet<char>>();
+    Dictionary<int, HashSet<char>> rows = new Dictionary<int, HashSet<char>>();
+    Dictionary<int, HashSet<char>> squares = new Dictionary<int, HashSet<char>>();
+
+    //iterate through input board
+    for (int r = 0; r < 9; r++)
+    {
+        for (int c = 0; c < 9; c++)
+        {
+            char cell = board[r][c];
+            //skip empty cells
+            if (cell == '.')
+            {                                                                                               
+                continue;
+            }
+            //Check for dupes; return false if found
+            if (rows.TryGetValue(r, out var rowSet) && rowSet.Contains(cell)                                               
+                    || cols.TryGetValue(c, out var colSet) && colSet.Contains(cell)
+                    || squares.TryGetValue((r / 3) * 3 + c / 3, out var squareSet) && squareSet.Contains(cell))
+            {
+                return false;
+            }
+            //These three lines will add a new row, col, or square if need be
+            cols.TryAdd(c, new HashSet<char>());                                                                           
+            rows.TryAdd(r, new HashSet<char>());
+            squares.TryAdd((r / 3) * 3 + c / 3, new HashSet<char>());
+            //These three lines will add the characters to the row/col/square's HashSet
+            cols[c].Add(cell);                                                                                              
+            rows[r].Add(cell);
+            squares[(r / 3) * 3 + c / 3].Add(cell);
+        }
+    }
+    //Return true if we're able to iterate over the whole input board
+    return true;
+}
