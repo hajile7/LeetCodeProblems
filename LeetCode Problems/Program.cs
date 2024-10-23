@@ -352,4 +352,27 @@ public class Solution
             Recurse(n, openP, closedP + 1, curr + ")", result);
         }
     }
+
+    static int[] DailyTemperatures(int[] temperatures)
+    {
+
+        //Instantiate result array + stack
+        int[] res = new int[temperatures.Length];
+        Stack<int[]> stack = new Stack<int[]>();
+
+        for (int i = 0; i < temperatures.Length; i++)
+        {
+            int t = temperatures[i];
+            //Pop from stack when following num in temperatures array is greater than previous num (num at top of stack)
+            //Then push the difference in their indexes to result array
+            while (stack.Count > 0 && t > stack.Peek()[0])
+            {
+                int[] pair = stack.Pop();
+                res[pair[1]] = i - pair[1];
+            }
+            //If stack is empty or number we're looking at is <= stack.Peek(), push to stack
+            stack.Push(new int[] { t, i });
+        }
+        return res;
+    }
 }
