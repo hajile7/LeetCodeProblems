@@ -424,4 +424,43 @@ public class Solution
         }
         return fleetCount;
     }
+
+    static int LargestRectangleArea(int[] heights)
+    {
+        int maxArea = 0;
+        //int[] will be in format [index, height]
+        Stack<int[]> stack = new Stack<int[]>(); 
+
+        //Iterate over input arr
+        for (int i = 0; i < heights.Length; i++)
+        {
+            int start = i;
+            //If stack is not empty and top value's height is greater than the height we're currently evaluating...
+            while (stack.Count > 0 && stack.Peek()[1] > heights[i])
+            {
+                int[] top = stack.Pop();
+                int index = top[0];
+                int height = top[1];
+                //i - index here is width, naturally
+                maxArea = Math.Max(maxArea, height * (i - index));
+                //Account for current rectangles new start index, is item(s) we just popped were TALLER than it; this means
+                //that we need to move the current rectangles starting index back to the index of the LAST rectangle we pop
+                //from the stack here
+                start = index;
+            }
+            //Push the new rectangle to the stack with adjusted start index and its height
+            stack.Push(new int[] { start, heights[i] });
+        }
+
+        //Deal with 'leftovers' in the stack. These leftovers represent rectangles that could have continued 'expanding' right
+        //given a larger input. Since this is the case, their ending index is going to be to the end of the input arr, heights.
+        //This is represented in the width portion of the formula: heights.Length - index
+        foreach (int[] pair in stack)
+        {
+            int index = pair[0];
+            int height = pair[1];
+            maxArea = Math.Max(maxArea, height * (heights.Length - index));
+        }
+        return maxArea;
+    }
 }
