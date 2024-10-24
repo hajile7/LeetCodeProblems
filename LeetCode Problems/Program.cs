@@ -378,23 +378,45 @@ public class Solution
 
     static int CarFleet(int[] position, int[] speed, int target)
     {
+        //n = input arrays len
         int n = position.Length;
+
+        //Create jagged array of double arrays... each ele is an array of doubles. Jagged because inner arrs
+        //can have different lengths. Pairs initializes the outer array object (of len(n)) and leaves all
+        //inner arrs uninitialized 
         double[][] pairs = new double[n][];
+
+        //iterate through input arrays and add each car to pairs: [pos, speed]
         for (int i = 0; i < n; i++)
         {
             pairs[i] = new double[] { position[i], speed[i] };
         }
+
+        //Sort our pairs object via position (arr[0]); result will be ordered by descending order of position
         Array.Sort(pairs, (a, b) => b[0].CompareTo(a[0]));
 
         int fleetCount = 0;
+
+        //Initialize our timeToReach double array
         double[] timeToReach = new double[n];
+
+        //Iterate over our now sorted jagged pairs array to fill timeToReach
         for (int i = 0; i < n; i++)
         {
+            //time to reach target = target - (car's position / speed)
             timeToReach[i] = (target - pairs[i][0]) / pairs[i][1];
+
+            //If car is not first car in arr (positioned closest to target in our set of cars) and
+            //timeToReach for car is less than or equal to car ahead([i-1]), set timeToReach of 
+            //curr car ([i]) = car ahead (because this car will catch car ahead (or meet at destination)
+            //and match its speed, joining the ALREADY CREATED (via below else statement) car fleet at this point).
             if (i >= 1 && timeToReach[i] <= timeToReach[i - 1])
             {
                 timeToReach[i] = timeToReach[i - 1];
             }
+            //First car always creates our first fleet. If above if is not entered afterwards, that means that car 
+            //we're looking at did not join this exisiting fleet before arriving at the destination
+            //(as it was too slow) and so must then create its own car fleet.
             else
             {
                 fleetCount++;
