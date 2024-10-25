@@ -1,6 +1,7 @@
 ﻿//Problems:
 //TwoSum
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Xml.Linq;
 
 static int[] twoSum(int[] nums, int target)
@@ -462,5 +463,36 @@ public class Solution
             maxArea = Math.Max(maxArea, height * (heights.Length - index));
         }
         return maxArea;
+    }
+
+    static bool ValidPalindrome(string s)
+    {
+        // Convert input to alphanumeric string without whitespace and always lowercase
+        StringBuilder sb = new StringBuilder(s.Length);
+
+        foreach (char c in s)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                sb.Append(c);
+            }
+        }
+
+        string checkString = sb.ToString().ToLower();
+
+        // Setup our two pointers... use math.Ceiling for cases where checkString.length is odd. If at
+        // any point our pointers are not equal, return false. Otherwise string must be valid. 
+        for (int i = 0; i < Math.Ceiling(checkString.Length / 2.0); i++)
+        {
+            int j = checkString.Length - 1 - i;
+            char a = checkString[i];
+            char b = checkString[j];
+            if (a != b)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
