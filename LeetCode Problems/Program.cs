@@ -321,6 +321,235 @@ static bool IsValidSudoku(char[][] board)
 }
 
 //Generate Valid Parens
+
+static int[] DailyTemperatures(int[] temperatures)
+{
+
+    //Instantiate result array + stack
+    int[] res = new int[temperatures.Length];
+    Stack<int[]> stack = new Stack<int[]>();
+
+    for (int i = 0; i < temperatures.Length; i++)
+    {
+        int t = temperatures[i];
+        //Pop from stack when following num in temperatures array is greater than previous num (num at top of stack)
+        //Then push the difference in their indexes to result array
+        while (stack.Count > 0 && t > stack.Peek()[0])
+        {
+            int[] pair = stack.Pop();
+            res[pair[1]] = i - pair[1];
+        }
+        //If stack is empty or number we're looking at is <= stack.Peek(), push to stack
+        stack.Push(new int[] { t, i });
+    }
+    return res;
+}
+
+static int CarFleet(int[] position, int[] speed, int target)
+{
+    //n = input arrays len
+    int n = position.Length;
+
+    //Create jagged array of double arrays... each ele is an array of doubles. Jagged because inner arrs
+    //can have different lengths. Pairs initializes the outer array object (of len(n)) and leaves all
+    //inner arrs uninitialized 
+    double[][] pairs = new double[n][];
+
+    //iterate through input arrays and add each car to pairs: [pos, speed]
+    for (int i = 0; i < n; i++)
+    {
+        pairs[i] = new double[] { position[i], speed[i] };
+    }
+
+    //Sort our pairs object via position (arr[0]); result will be ordered by descending order of position
+    Array.Sort(pairs, (a, b) => b[0].CompareTo(a[0]));
+
+    int fleetCount = 0;
+
+    //Initialize our timeToReach double array
+    double[] timeToReach = new double[n];
+
+    //Iterate over our now sorted jagged pairs array to fill timeToReach
+    for (int i = 0; i < n; i++)
+    {
+        //time to reach target = target - (car's position / speed)
+        timeToReach[i] = (target - pairs[i][0]) / pairs[i][1];
+
+        //If car is not first car in arr (positioned closest to target in our set of cars) and
+        //timeToReach for car is less than or equal to car ahead([i-1]), set timeToReach of 
+        //curr car ([i]) = car ahead (because this car will catch car ahead (or meet at destination)
+        //and match its speed, joining the ALREADY CREATED (via below else statement) car fleet at this point).
+        if (i >= 1 && timeToReach[i] <= timeToReach[i - 1])
+        {
+            timeToReach[i] = timeToReach[i - 1];
+        }
+        //First car always creates our first fleet. If above if is not entered afterwards, that means that car 
+        //we're looking at did not join this exisiting fleet before arriving at the destination
+        //(as it was too slow) and so must then create its own car fleet.
+        else
+        {
+            fleetCount++;
+        }
+    }
+    return fleetCount;
+}
+
+static int LargestRectangleArea(int[] heights)
+{
+    int maxArea = 0;
+    //int[] will be in format [index, height]
+    Stack<int[]> stack = new Stack<int[]>(); 
+
+    //Iterate over input arr
+    for (int i = 0; i < heights.Length; i++)
+    {
+        int start = i;
+        //If stack is not empty and top value's height is greater than the height we're currently evaluating...
+        while (stack.Count > 0 && stack.Peek()[1] > heights[i])
+        {
+            int[] top = stack.Pop();
+            int index = top[0];
+            int height = top[1];
+            //i - index here is width, naturally
+            maxArea = Math.Max(maxArea, height * (i - index));
+            //Account for current rectangles new start index, is item(s) we just popped were TALLER than it; this means
+            //that we need to move the current rectangles starting index back to the index of the LAST rectangle we pop
+            //from the stack here
+            start = index;
+        }
+        //Push the new rectangle to the stack with adjusted start index and its height
+        stack.Push(new int[] { start, heights[i] });
+    }
+
+    //Deal with 'leftovers' in the stack. These leftovers represent rectangles that could have continued 'expanding' right
+    //given a larger input. Since this is the case, their ending index is going to be to the end of the input arr, heights.
+    //This is represented in the width portion of the formula: heights.Length - index
+    foreach (int[] pair in stack)
+    {
+        int index = pair[0];
+        int height = pair[1];
+        maxArea = Math.Max(maxArea, height * (heights.Length - index));
+    }
+    return maxArea;
+}
+
+static bool ValidPalindrome(string s)
+{
+    // Convert input to alphanumeric string without whitespace and always lowercase
+    StringBuilder sb = new StringBuilder(s.Length);
+
+    foreach (char c in s)
+    {
+        if (char.IsLetterOrDigit(c))
+        {
+            sb.Append(c);
+        }
+    }
+
+    string checkString = sb.ToString().ToLower();
+
+    // Setup our two pointers... use math.Ceiling for cases where checkString.length is odd. If at
+    // any point our pointers are not equal, return false. Otherwise string must be valid. 
+    for (int i = 0; i < Math.Ceiling(checkString.Length / 2.0); i++)
+    {
+        int j = checkString.Length - 1 - i;
+        char a = checkString[i];
+        char b = checkString[j];
+        if (a != b)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+static int[] TwoSumSorted(int[] numbers, int target)
+{
+    //Create one pointer at start of input arr, one for end of input arr
+    int l = 0, r = numbers.Length - 1;
+
+    //While those pointers have not overlapped...
+    while (l < r)
+    {
+        //Calc sum
+        int curSum = numbers[l] + numbers[r];
+
+        //If we're larger than target, move end pointer one position
+        if (curSum > target)
+        {
+            r--;
+        }
+
+        //If we're smaller than target, move starting pointer one position
+        else if (curSum < target)
+        {
+            l++;
+        }
+
+        //If neither, we must be looking at our answer... so we return.
+        //This logic only works because in this problem we're given a 
+        //sorted (by ascending) array
+        else
+        {
+            return new int[] { l + 1, r + 1 };
+        }
+    }
+    return new int[0];
+}
+
+static List<List<int>> ThreeSum(int[] nums)
+{
+    //Sort our input arr & instantiate empty result list
+    Array.Sort(nums);
+    List<List<int>> res = new List<List<int>>();
+
+    //Iterate over input
+    for (int i = 0; i < nums.Length; i++)
+    {
+        //If i is greater than 0, no triplet including i can possible == 0, so we can break
+        if (nums[i] > 0) break;
+
+        //Skip duplicates
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+        //Setup our left and right pointers just like in TwoSum2 problem, except this time accounting
+        //for i, which will represent our first number in a triplet
+        int l = i + 1, r = nums.Length - 1;
+        while (l < r)
+        {
+            //Sum is sum of curr triplet we're looking at (naturally)
+            int sum = nums[i] + nums[l] + nums[r];
+
+            //Move pointers based on sum
+            if (sum > 0)
+            {
+                r--;
+            }
+            else if (sum < 0)
+            {
+                l++;
+            }
+
+            //Valid triplet condition... add triplet to result list
+            else
+            {
+                res.Add(new List<int> { nums[i], nums[l], nums[r] });
+                l++;
+                r--;
+
+                //Use a while loop to make sure we don't add any duplicate triplets by incrementing our
+                //left pointer until we reach a new unique value
+                while (l < r && nums[l] == nums[l - 1])
+                {
+                    l++;
+                }
+            }
+        }
+    }
+    return res;
+}
+
 public class Solution
 {
     //Create an entry point to our recursive function
@@ -354,179 +583,4 @@ public class Solution
         }
     }
 
-    static int[] DailyTemperatures(int[] temperatures)
-    {
-
-        //Instantiate result array + stack
-        int[] res = new int[temperatures.Length];
-        Stack<int[]> stack = new Stack<int[]>();
-
-        for (int i = 0; i < temperatures.Length; i++)
-        {
-            int t = temperatures[i];
-            //Pop from stack when following num in temperatures array is greater than previous num (num at top of stack)
-            //Then push the difference in their indexes to result array
-            while (stack.Count > 0 && t > stack.Peek()[0])
-            {
-                int[] pair = stack.Pop();
-                res[pair[1]] = i - pair[1];
-            }
-            //If stack is empty or number we're looking at is <= stack.Peek(), push to stack
-            stack.Push(new int[] { t, i });
-        }
-        return res;
-    }
-
-    static int CarFleet(int[] position, int[] speed, int target)
-    {
-        //n = input arrays len
-        int n = position.Length;
-
-        //Create jagged array of double arrays... each ele is an array of doubles. Jagged because inner arrs
-        //can have different lengths. Pairs initializes the outer array object (of len(n)) and leaves all
-        //inner arrs uninitialized 
-        double[][] pairs = new double[n][];
-
-        //iterate through input arrays and add each car to pairs: [pos, speed]
-        for (int i = 0; i < n; i++)
-        {
-            pairs[i] = new double[] { position[i], speed[i] };
-        }
-
-        //Sort our pairs object via position (arr[0]); result will be ordered by descending order of position
-        Array.Sort(pairs, (a, b) => b[0].CompareTo(a[0]));
-
-        int fleetCount = 0;
-
-        //Initialize our timeToReach double array
-        double[] timeToReach = new double[n];
-
-        //Iterate over our now sorted jagged pairs array to fill timeToReach
-        for (int i = 0; i < n; i++)
-        {
-            //time to reach target = target - (car's position / speed)
-            timeToReach[i] = (target - pairs[i][0]) / pairs[i][1];
-
-            //If car is not first car in arr (positioned closest to target in our set of cars) and
-            //timeToReach for car is less than or equal to car ahead([i-1]), set timeToReach of 
-            //curr car ([i]) = car ahead (because this car will catch car ahead (or meet at destination)
-            //and match its speed, joining the ALREADY CREATED (via below else statement) car fleet at this point).
-            if (i >= 1 && timeToReach[i] <= timeToReach[i - 1])
-            {
-                timeToReach[i] = timeToReach[i - 1];
-            }
-            //First car always creates our first fleet. If above if is not entered afterwards, that means that car 
-            //we're looking at did not join this exisiting fleet before arriving at the destination
-            //(as it was too slow) and so must then create its own car fleet.
-            else
-            {
-                fleetCount++;
-            }
-        }
-        return fleetCount;
-    }
-
-    static int LargestRectangleArea(int[] heights)
-    {
-        int maxArea = 0;
-        //int[] will be in format [index, height]
-        Stack<int[]> stack = new Stack<int[]>(); 
-
-        //Iterate over input arr
-        for (int i = 0; i < heights.Length; i++)
-        {
-            int start = i;
-            //If stack is not empty and top value's height is greater than the height we're currently evaluating...
-            while (stack.Count > 0 && stack.Peek()[1] > heights[i])
-            {
-                int[] top = stack.Pop();
-                int index = top[0];
-                int height = top[1];
-                //i - index here is width, naturally
-                maxArea = Math.Max(maxArea, height * (i - index));
-                //Account for current rectangles new start index, is item(s) we just popped were TALLER than it; this means
-                //that we need to move the current rectangles starting index back to the index of the LAST rectangle we pop
-                //from the stack here
-                start = index;
-            }
-            //Push the new rectangle to the stack with adjusted start index and its height
-            stack.Push(new int[] { start, heights[i] });
-        }
-
-        //Deal with 'leftovers' in the stack. These leftovers represent rectangles that could have continued 'expanding' right
-        //given a larger input. Since this is the case, their ending index is going to be to the end of the input arr, heights.
-        //This is represented in the width portion of the formula: heights.Length - index
-        foreach (int[] pair in stack)
-        {
-            int index = pair[0];
-            int height = pair[1];
-            maxArea = Math.Max(maxArea, height * (heights.Length - index));
-        }
-        return maxArea;
-    }
-
-    static bool ValidPalindrome(string s)
-    {
-        // Convert input to alphanumeric string without whitespace and always lowercase
-        StringBuilder sb = new StringBuilder(s.Length);
-
-        foreach (char c in s)
-        {
-            if (char.IsLetterOrDigit(c))
-            {
-                sb.Append(c);
-            }
-        }
-
-        string checkString = sb.ToString().ToLower();
-
-        // Setup our two pointers... use math.Ceiling for cases where checkString.length is odd. If at
-        // any point our pointers are not equal, return false. Otherwise string must be valid. 
-        for (int i = 0; i < Math.Ceiling(checkString.Length / 2.0); i++)
-        {
-            int j = checkString.Length - 1 - i;
-            char a = checkString[i];
-            char b = checkString[j];
-            if (a != b)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    static int[] TwoSumSorted(int[] numbers, int target)
-    {
-        //Create one pointer at start of input arr, one for end of input arr
-        int l = 0, r = numbers.Length - 1;
-
-        //While those pointers have not overlapped...
-        while (l < r)
-        {
-            //Calc sum
-            int curSum = numbers[l] + numbers[r];
-
-            //If we're larger than target, move end pointer one position
-            if (curSum > target)
-            {
-                r--;
-            }
-
-            //If we're smaller than target, move starting pointer one position
-            else if (curSum < target)
-            {
-                l++;
-            }
-
-            //If neither, we must be looking at our answer... so we return.
-            //This logic only works because in this problem we're given a 
-            //sorted (by ascending) array
-            else
-            {
-                return new int[] { l + 1, r + 1 };
-            }
-        }
-        return new int[0];
-    }
 }
