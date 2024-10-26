@@ -495,4 +495,38 @@ public class Solution
 
         return true;
     }
+
+    static int[] TwoSumSorted(int[] numbers, int target)
+    {
+        //Create one pointer at start of input arr, one for end of input arr
+        int l = 0, r = numbers.Length - 1;
+
+        //While those pointers have not overlapped...
+        while (l < r)
+        {
+            //Calc sum
+            int curSum = numbers[l] + numbers[r];
+
+            //If we're larger than target, move end pointer one position
+            if (curSum > target)
+            {
+                r--;
+            }
+
+            //If we're smaller than target, move starting pointer one position
+            else if (curSum < target)
+            {
+                l++;
+            }
+
+            //If neither, we must be looking at our answer... so we return.
+            //This logic only works because in this problem we're given a 
+            //sorted (by ascending) array
+            else
+            {
+                return new int[] { l + 1, r + 1 };
+            }
+        }
+        return new int[0];
+    }
 }
