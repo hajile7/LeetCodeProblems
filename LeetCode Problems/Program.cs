@@ -550,6 +550,32 @@ static List<List<int>> ThreeSum(int[] nums)
     return res;
 }
 
+static int MaxArea(int[] heights)
+{
+    // Setup var to hold current maximum while we iterate through input
+    int res = 0;
+    int l = 0, r = heights.Length - 1;
+
+    // Iterate via our two pointers while they do not overlap
+    while (l < r)
+    {
+        // Area is = width (r - l) * height (min(heights[l], heights[r]))
+        int area = (Math.Min(heights[l], heights[r])) * (r - l);
+        res = Math.Max(area, res);
+
+        // Move our pointers based on heights
+        if (heights[l] <= heights[r])
+        {
+            l++;
+        }
+        else
+        {
+            r--;
+        }
+    }
+    return res;
+}
+
 public class Solution
 {
     //Create an entry point to our recursive function
