@@ -3,7 +3,27 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Xml.Linq;
+static bool hasDuplicate(int[] nums)
+{
 
+    Dictionary<int, int> hash = new Dictionary<int, int>();
+
+    foreach (int num in nums)
+    {
+        if (!hash.ContainsKey(num))
+        {
+            hash.Add(num, 1);
+        }
+
+        else
+        {
+            return true;
+        }
+
+    }
+
+    return false;
+}
 static int[] twoSum(int[] nums, int target)
 {
     var map = new Dictionary<int, int>();
